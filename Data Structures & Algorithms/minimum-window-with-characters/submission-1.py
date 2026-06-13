@@ -1,0 +1,31 @@
+from collections import Counter
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        l = 0
+        cNeed,cHave = Counter(t), Counter()
+        need, have = len(cNeed), 0
+        bstWin = ""
+
+        for r in range(len(s)):
+          new = s[r]
+          if new in cNeed:
+            cHave[new] += 1
+            if cHave[new] == cNeed[new]:
+              have += 1
+
+          while have == need and l <= r: 
+            old = s[l]
+            new_win = s[l: r + 1]
+            if not bstWin or len(new_win) < len(bstWin):
+              bstWin = new_win
+            
+            if old in cNeed:
+              cHave[old] -= 1
+              if cHave[old] < cNeed[old]:
+                have -= 1
+            
+            l += 1
+
+        
+
+        return bstWin
